@@ -29,35 +29,59 @@ int main(int argc, char** argv) {
 
     gfxline_t* filled2 = gfxline_from_gfxpoly_with_direction(evenodd);
     gfxline_t* l;
+
+    int n = 0;
     for (l = filled2; l; l = l->next) {
-        if (l->type == gfx_moveTo) {
-            if (within) {
-                printf("\n closepath fill\n");
-                within = 0;
-            }
-            printf("\nnewpath %f %f moveto", l->x, l->y);
-            within = 1;
-        } else if (l->type == gfx_lineTo) {
-            printf(" %f %f lineto", l->x, l->y);
-        }
+        n++;
     }
 
-    if (within) {
-        printf("\n closepath fill\n");
-        within = 0;
+    double xs[n], ys[n];
+    n = 0;
+
+    for (l = filled2; l; l = l->next) {
+        if (l->type == gfx_moveTo || l->type == gfx_lineTo) {
+            xs[n] = l->x;
+            ys[n] = l->y;
+            n++;
+        }
+
+        if (l->next == NULL || l->next->type != gfx_lineTo) {
+            if (n > 2) {
+                printf("newpath ");
+
+                int i;
+                for (i = 0; i < n; i++) {
+                    printf("%f %f %s ", xs[i], ys[i], i == 0 ? "moveto" : "lineto");
+                }
+                n = 0;
+
+                printf("closepath fill\n");
+            }
+        }
     }
 
     printf("0 setgray\n");
     printf("1 .setopacityalpha\n");
 
     for (l = filled2; l; l = l->next) {
-        if (l->type == gfx_moveTo) {
-            printf("\n%f %f moveto", l->x, l->y);
-            within = 1;
-        } else if (l->type == gfx_lineTo) {
-            printf(" %f %f lineto", l->x, l->y);
+        if (l->type == gfx_moveTo || l->type == gfx_lineTo) {
+            xs[n] = l->x;
+            ys[n] = l->y;
+            n++;
+        }
+
+        if (l->next == NULL || l->next->type != gfx_lineTo) {
+            if (n > 2) {
+                printf("newpath ");
+
+                int i;
+                for (i = 0; i < n; i++) {
+                    printf("%f %f %s ", xs[i], ys[i], i == 0 ? "moveto" : "lineto");
+                }
+                n = 0;
+
+                printf("closepath stroke\n");
+            }
         }
     }
-
-    printf("\nstroke\n");
 }
