@@ -52,19 +52,15 @@ typedef struct _gridpoint {
 typedef double gfxcoord_t;
 
 /* a bounding box (in real coordinate space) */
-typedef struct _gfxbbox {
-    gfxcoord_t x1,y1,x2,y2;
-} gfxbbox_t;
+typedef struct _gfxbbox { gfxcoord_t x1, y1, x2, y2; } gfxbbox_t;
 
 /* Every segment has an original direction, which is the direction
    the segment had in the input data.
    as our scanline moves from minimum y to maximum y, "DOWN" means
    the the (original) segment's y2 is larger than its y1 */
-typedef enum {DIR_UP, DIR_DOWN, DIR_UNKNOWN} segment_dir_t;
+typedef enum { DIR_UP, DIR_DOWN, DIR_UNKNOWN } segment_dir_t;
 
-typedef struct _edgestyle {
-    void*internal;
-} edgestyle_t;
+typedef struct _edgestyle { void* internal; } edgestyle_t;
 
 /* +----------------------------------------------------------------+ */
 /* |                              version                           | */
@@ -77,30 +73,30 @@ const char* gfxpoly_version();
 
 typedef struct _gfxsegmentlist {
     segment_dir_t dir;
-    edgestyle_t*fs;
+    edgestyle_t* fs;
     int points_size;
     int num_points;
-    gridpoint_t*points;
-    struct _gfxsegmentlist*next;
+    gridpoint_t* points;
+    struct _gfxsegmentlist* next;
 } gfxsegmentlist_t;
 
 typedef struct _gfxpoly {
     double gridsize;
-    gfxsegmentlist_t*strokes;
+    gfxsegmentlist_t* strokes;
 } gfxpoly_t;
 
-gfxbbox_t gfxpoly_calculate_bbox(gfxpoly_t*poly);
-void gfxpoly_destroy(gfxpoly_t*poly);
+gfxbbox_t gfxpoly_calculate_bbox(gfxpoly_t* poly);
+void gfxpoly_destroy(gfxpoly_t* poly);
 
 /* +----------------------------------------------------------------+ */
 /* |                            Operators                           | */
 /* +----------------------------------------------------------------+ */
 
-gfxpoly_t* gfxpoly_intersect(gfxpoly_t*p1, gfxpoly_t*p2);
-gfxpoly_t* gfxpoly_union(gfxpoly_t*p1, gfxpoly_t*p2);
+gfxpoly_t* gfxpoly_intersect(gfxpoly_t* p1, gfxpoly_t* p2);
+gfxpoly_t* gfxpoly_union(gfxpoly_t* p1, gfxpoly_t* p2);
 
-gfxpoly_t* gfxpoly_selfintersect_evenodd(gfxpoly_t*p);
-gfxpoly_t* gfxpoly_selfintersect_circular(gfxpoly_t*p);
+gfxpoly_t* gfxpoly_selfintersect_evenodd(gfxpoly_t* p);
+gfxpoly_t* gfxpoly_selfintersect_circular(gfxpoly_t* p);
 
 /* +----------------------------------------------------------------+ */
 /* |                         Area and Moments                       | */
@@ -111,52 +107,58 @@ typedef struct _moments {
     double m[3][3];
 } moments_t;
 
-double gfxpoly_area(gfxpoly_t*p);
-double gfxpoly_intersection_area(gfxpoly_t*p1, gfxpoly_t*p2);
-moments_t gfxpoly_moments(gfxpoly_t*p);
+double gfxpoly_area(gfxpoly_t* p);
+double gfxpoly_intersection_area(gfxpoly_t* p1, gfxpoly_t* p2);
+moments_t gfxpoly_moments(gfxpoly_t* p);
 
 /* +----------------------------------------------------------------+ */
 /* |     Conversion from curves and floating point coordinates      | */
 /* +----------------------------------------------------------------+ */
 
-typedef enum {gfx_moveTo, gfx_lineTo, gfx_splineTo} gfx_linetype;
-typedef enum {gfx_joinMiter, gfx_joinRound, gfx_joinBevel} gfx_joinType;
-typedef enum {gfx_capButt, gfx_capRound, gfx_capSquare} gfx_capType;
+typedef enum { gfx_moveTo, gfx_lineTo, gfx_splineTo } gfx_linetype;
+typedef enum { gfx_joinMiter, gfx_joinRound, gfx_joinBevel } gfx_joinType;
+typedef enum { gfx_capButt, gfx_capRound, gfx_capSquare } gfx_capType;
 
 typedef struct _gfxline {
     gfx_linetype type;
-    gfxcoord_t x,y;
-    gfxcoord_t sx,sy;
-    struct _gfxline*prev;
-    struct _gfxline*next;
+    gfxcoord_t x, y;
+    gfxcoord_t sx, sy;
+    struct _gfxline* prev;
+    struct _gfxline* next;
 } gfxline_t;
 
 gfxline_t* gfxline_new();
-gfxline_t* gfxline_moveTo(gfxline_t*line, gfxcoord_t x, gfxcoord_t y);
-gfxline_t* gfxline_lineTo(gfxline_t*line, gfxcoord_t x, gfxcoord_t y);
-gfxline_t* gfxline_splineTo(gfxline_t*line, gfxcoord_t sx, gfxcoord_t sy, gfxcoord_t x, gfxcoord_t y);
+gfxline_t* gfxline_moveTo(gfxline_t* line, gfxcoord_t x, gfxcoord_t y);
+gfxline_t* gfxline_lineTo(gfxline_t* line, gfxcoord_t x, gfxcoord_t y);
+gfxline_t*
+gfxline_splineTo(gfxline_t* line, gfxcoord_t sx, gfxcoord_t sy, gfxcoord_t x, gfxcoord_t y);
 
-gfxpoly_t* gfxpoly_from_fill(gfxline_t*line, double gridsize);
-gfxpoly_t* gfxpoly_from_stroke(gfxline_t*line, gfxcoord_t width, gfx_capType cap_style, gfx_joinType joint_style, gfxcoord_t miterLimit, double gridsize);
-void gfxline_destroy(gfxline_t*l);
+gfxpoly_t* gfxpoly_from_fill(gfxline_t* line, double gridsize);
+gfxpoly_t* gfxpoly_from_stroke(gfxline_t* line,
+                               gfxcoord_t width,
+                               gfx_capType cap_style,
+                               gfx_joinType joint_style,
+                               gfxcoord_t miterLimit,
+                               double gridsize);
+void gfxline_destroy(gfxline_t* l);
 
 /* +----------------------------------------------------------------+ */
 /* |     creation of gfxpoly objects by drawing on a "gfxcanvas"    | */
 /* +----------------------------------------------------------------+ */
 
-typedef struct _gfxcanvas
-{
-    void*internal;
-    gfxcoord_t x,y;
+typedef struct _gfxcanvas {
+    void* internal;
+    gfxcoord_t x, y;
 
-    void (*setUserData)(struct _gfxcanvas*d, void*user);
+    void (*setUserData)(struct _gfxcanvas* d, void* user);
 
-    void (*moveTo)(struct _gfxcanvas*d, gfxcoord_t x, gfxcoord_t y);
-    void (*lineTo)(struct _gfxcanvas*d, gfxcoord_t x, gfxcoord_t y);
-    void (*splineTo)(struct _gfxcanvas*d, gfxcoord_t sx, gfxcoord_t sy, gfxcoord_t x, gfxcoord_t y);
-    void (*close)(struct _gfxcanvas*d);
+    void (*moveTo)(struct _gfxcanvas* d, gfxcoord_t x, gfxcoord_t y);
+    void (*lineTo)(struct _gfxcanvas* d, gfxcoord_t x, gfxcoord_t y);
+    void (*splineTo)(
+        struct _gfxcanvas* d, gfxcoord_t sx, gfxcoord_t sy, gfxcoord_t x, gfxcoord_t y);
+    void (*close)(struct _gfxcanvas* d);
 
-    void* (*result)(struct _gfxcanvas*d);
+    void* (*result)(struct _gfxcanvas* d);
 } gfxcanvas_t;
 
 gfxcanvas_t* gfxcanvas_new(double gridsize);
@@ -165,46 +167,49 @@ gfxcanvas_t* gfxcanvas_new(double gridsize);
 /* |           conversion from gfxpoly to gfxline lists             | */
 /* +----------------------------------------------------------------+ */
 
-gfxline_t* gfxline_from_gfxpoly(gfxpoly_t*poly);
-gfxline_t* gfxline_from_gfxpoly_with_direction(gfxpoly_t*poly);
+gfxline_t* gfxline_from_gfxpoly(gfxpoly_t* poly);
+gfxline_t* gfxline_from_gfxpoly_with_direction(gfxpoly_t* poly);
 
 /* +----------------------------------------------------------------+ */
 /* |                   convenience functions                        | */
 /* +----------------------------------------------------------------+ */
 
-gfxline_t* gfxpoly_circular_to_evenodd(gfxline_t*line, double gridsize);
-gfxpoly_t* gfxpoly_createbox(double x1, double y1,double x2, double y2, double gridsize);
+gfxline_t* gfxpoly_circular_to_evenodd(gfxline_t* line, double gridsize);
+gfxpoly_t* gfxpoly_createbox(double x1, double y1, double x2, double y2, double gridsize);
 
 /* +----------------------------------------------------------------+ */
 /* |                        load /save                              | */
 /* +----------------------------------------------------------------+ */
 
-gfxpoly_t* gfxpoly_from_file(const char*filename);
-void gfxpoly_save(gfxpoly_t*poly, const char*filename);
+gfxpoly_t* gfxpoly_from_file(const char* filename);
+void gfxpoly_save(gfxpoly_t* poly, const char* filename);
 
 /* +----------------------------------------------------------------+ */
 /* |           Low level scanline processing interface              | */
 /* +----------------------------------------------------------------+ */
 
 typedef struct _windstate {
-    void*user;
+    void* user;
     char is_filled;
     int wind_nr;
 } windstate_t;
 
 typedef struct _windcontext {
-    void*user;
+    void* user;
     int num_polygons;
 } windcontext_t;
 
 extern windcontext_t onepolygon;
 extern windcontext_t twopolygons;
 
-typedef struct _windrule
-{
+typedef struct _windrule {
     windstate_t (*start)(windcontext_t* context);
-    windstate_t (*add)(windcontext_t*context, windstate_t left, edgestyle_t*edge, segment_dir_t dir, int polygon_nr);
-    edgestyle_t* (*diff)(windcontext_t*context, windstate_t*left, windstate_t*right);
+    windstate_t (*add)(windcontext_t* context,
+                       windstate_t left,
+                       edgestyle_t* edge,
+                       segment_dir_t dir,
+                       int polygon_nr);
+    edgestyle_t* (*diff)(windcontext_t* context, windstate_t* left, windstate_t* right);
 } windrule_t;
 
 extern windrule_t windrule_evenodd;
@@ -212,6 +217,10 @@ extern windrule_t windrule_circular;
 extern windrule_t windrule_intersect;
 extern windrule_t windrule_union;
 
-gfxpoly_t* gfxpoly_process(gfxpoly_t*poly1, gfxpoly_t*poly2, windrule_t*windrule, windcontext_t*context, moments_t*moments);
+gfxpoly_t* gfxpoly_process(gfxpoly_t* poly1,
+                           gfxpoly_t* poly2,
+                           windrule_t* windrule,
+                           windcontext_t* context,
+                           moments_t* moments);
 
 #endif

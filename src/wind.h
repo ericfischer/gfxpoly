@@ -31,7 +31,7 @@ POSSIBILITY OF SUCH DAMAGE. */
 
 #include "gfxpoly.h"
 
-#define DIR_INVERT(d) ((d)^(DIR_UP^DIR_DOWN))
+#define DIR_INVERT(d) ((d) ^ (DIR_UP ^ DIR_DOWN))
 
 extern edgestyle_t edgestyle_default;
 

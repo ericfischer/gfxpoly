@@ -33,10 +33,10 @@ POSSIBILITY OF SUCH DAMAGE. */
 
 typedef struct _ttf_table {
     uint32_t id;
-    struct _ttf_table*prev;
-    struct _ttf_table*next;
+    struct _ttf_table* prev;
+    struct _ttf_table* next;
 
-    uint8_t*data;
+    uint8_t* data;
     int len;
     int memsize;
 } ttf_table_t;
@@ -106,8 +106,7 @@ typedef struct _table_os2 {
     uint16_t usMaxContext;
 } table_os2_t;
 
-typedef struct _table_hea
-{
+typedef struct _table_hea {
     uint16_t advanceWidthMax;
     int16_t minLeftSideBearing;
     int16_t minRightSideBearing;
@@ -124,24 +123,24 @@ typedef struct _table_hea
 typedef uint32_t unicode_t;
 
 typedef struct _ttfpoint {
-    int x,y;
+    int x, y;
     uint8_t flags;
 } ttfpoint_t;
 
 typedef struct _ttfglyph {
     uint16_t advance;
     int16_t bearing;
-    int16_t xmin,ymin,xmax,ymax;
+    int16_t xmin, ymin, xmax, ymax;
     int code_size;
-    uint8_t*code;
+    uint8_t* code;
     int num_points;
-    ttfpoint_t*points;
+    ttfpoint_t* points;
 } ttfglyph_t;
 
 typedef struct _table_head {
     uint16_t flags;
     uint16_t units_per_em;
-    int16_t xmin,ymin,xmax,ymax;
+    int16_t xmin, ymin, xmax, ymax;
     uint16_t macStyle;
     uint16_t lowest_readable_size;
     int16_t dir_hint;
@@ -154,7 +153,7 @@ typedef struct _table_post {
 } table_post_t;
 
 typedef struct _table_cvt {
-    int16_t*values;
+    int16_t* values;
     int num;
 } table_cvt_t;
 
@@ -163,33 +162,33 @@ typedef struct _table_gasp {
     struct {
         uint16_t size;
         uint16_t behaviour;
-    } *records;
+    } * records;
 } table_gasp_t;
 
 typedef struct _table_code {
-    uint8_t*code;
+    uint8_t* code;
     int size;
 } table_code_t;
 
 typedef struct _ttf {
-    char*family_name;     /* nameId 1 */
-    char*subfamily_name;  /* nameId 2 */
-    char*font_uid;        /* nameId 3 */
-    char*full_name;       /* nameId 4 */
-    char*version_string;  /* nameId 5 */
-    char*postscript_name; /* nameId 6 */
+    char* family_name;     /* nameId 1 */
+    char* subfamily_name;  /* nameId 2 */
+    char* font_uid;        /* nameId 3 */
+    char* full_name;       /* nameId 4 */
+    char* version_string;  /* nameId 5 */
+    char* postscript_name; /* nameId 6 */
 
-    ttf_table_t*tables;
+    ttf_table_t* tables;
 
-    table_head_t*head;
-    table_maxp_t*maxp;
-    table_os2_t*os2;
-    table_hea_t*hea;
-    table_post_t*post;
-    table_cvt_t*cvt;
-    table_gasp_t*gasp;
-    table_code_t*prep;
-    table_code_t*fpgm;
+    table_head_t* head;
+    table_maxp_t* maxp;
+    table_os2_t* os2;
+    table_hea_t* hea;
+    table_post_t* post;
+    table_cvt_t* cvt;
+    table_gasp_t* gasp;
+    table_code_t* prep;
+    table_code_t* fpgm;
 
     char is_vertical;
 
@@ -198,25 +197,24 @@ typedef struct _ttf {
     int16_t lineGap;
 
     int num_glyphs;
-    ttfglyph_t*glyphs;
+    ttfglyph_t* glyphs;
 
     int unicode_size;
-    unicode_t*unicode;
+    unicode_t* unicode;
 
     uint32_t version;
 } ttf_t;
 
-
-ttf_t*ttf_new();
-ttf_t* ttf_open(const char*filename);
-void ttf_reduce(ttf_t*ttf);
-ttf_t*ttf_load(void*data, int length);
-ttf_table_t*ttf_addtable(ttf_t*ttf, uint32_t tag);
-void ttf_create_truetype_tables(ttf_t*ttf);
-void ttf_dump(ttf_t*ttf);
-void ttf_destroy(ttf_t*ttf);
-void ttf_save(ttf_t*ttf, const char*filename);
-void ttf_save_eot(ttf_t*ttf, const char*filename);
-ttfglyph_t* ttf_find_unicode(ttf_t*ttf, uint32_t unicode);
+ttf_t* ttf_new();
+ttf_t* ttf_open(const char* filename);
+void ttf_reduce(ttf_t* ttf);
+ttf_t* ttf_load(void* data, int length);
+ttf_table_t* ttf_addtable(ttf_t* ttf, uint32_t tag);
+void ttf_create_truetype_tables(ttf_t* ttf);
+void ttf_dump(ttf_t* ttf);
+void ttf_destroy(ttf_t* ttf);
+void ttf_save(ttf_t* ttf, const char* filename);
+void ttf_save_eot(ttf_t* ttf, const char* filename);
+ttfglyph_t* ttf_find_unicode(ttf_t* ttf, uint32_t unicode);
 
 #endif

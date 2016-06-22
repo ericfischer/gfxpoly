@@ -31,20 +31,19 @@ POSSIBILITY OF SUCH DAMAGE. */
 
 #include "poly.h"
 
-typedef struct _polywriter
-{
-    void(*setedgestyle)(struct _polywriter*, void*style);
-    void(*moveto)(struct _polywriter*, int32_t x, int32_t y);
-    void(*lineto)(struct _polywriter*, int32_t x, int32_t y);
-    void(*setgridsize)(struct _polywriter*, double g);
-    void*(*finish)(struct _polywriter*);
-    void*internal;
+typedef struct _polywriter {
+    void (*setedgestyle)(struct _polywriter*, void* style);
+    void (*moveto)(struct _polywriter*, int32_t x, int32_t y);
+    void (*lineto)(struct _polywriter*, int32_t x, int32_t y);
+    void (*setgridsize)(struct _polywriter*, double g);
+    void* (*finish)(struct _polywriter*);
+    void* internal;
 } polywriter_t;
 
-void gfxcanvas_target_poly(gfxcanvas_t*d, double gridsize);
+void gfxcanvas_target_poly(gfxcanvas_t* d, double gridsize);
 
-void gfxpolywriter_init(polywriter_t*w);
-gfxpoly_t* gfxpoly_from_fill(gfxline_t*line, double gridsize);
-gfxpoly_t* gfxpoly_from_file(const char*filename);
+void gfxpolywriter_init(polywriter_t* w);
+gfxpoly_t* gfxpoly_from_fill(gfxline_t* line, double gridsize);
+gfxpoly_t* gfxpoly_from_file(const char* filename);
 
 #endif //__poly_convert_h__

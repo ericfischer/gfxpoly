@@ -26,46 +26,43 @@ CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGE. */
 
-#include <stdlib.h>
-#include "gfxpoly.h"
 #include "gfxline.h"
+#include "gfxpoly.h"
+#include <stdlib.h>
 
-gfxline_t* gfxline_new()
-{
+gfxline_t* gfxline_new() {
     return NULL; // list is initially empty
 }
 
-gfxline_t* gfxline_moveTo(gfxline_t*prev, gfxcoord_t x, gfxcoord_t y)
-{
-    gfxline_t*line = malloc(sizeof(gfxline_t));
+gfxline_t* gfxline_moveTo(gfxline_t* prev, gfxcoord_t x, gfxcoord_t y) {
+    gfxline_t* line = malloc(sizeof(gfxline_t));
     line->type = gfx_moveTo;
     line->x = x;
     line->y = y;
     line->prev = prev;
     line->next = NULL;
-    if(prev) {
+    if (prev) {
         prev->next = line;
     }
     return line;
 }
 
-gfxline_t* gfxline_lineTo(gfxline_t*prev, gfxcoord_t x, gfxcoord_t y)
-{
-    gfxline_t*line = malloc(sizeof(gfxline_t));
+gfxline_t* gfxline_lineTo(gfxline_t* prev, gfxcoord_t x, gfxcoord_t y) {
+    gfxline_t* line = malloc(sizeof(gfxline_t));
     line->type = gfx_lineTo;
     line->x = x;
     line->y = y;
     line->prev = prev;
     line->next = NULL;
-    if(prev) {
+    if (prev) {
         prev->next = line;
     }
     return line;
 }
 
-gfxline_t* gfxline_splineTo(gfxline_t*prev, gfxcoord_t sx, gfxcoord_t sy, gfxcoord_t x, gfxcoord_t y)
-{
-    gfxline_t*line = malloc(sizeof(gfxline_t));
+gfxline_t*
+gfxline_splineTo(gfxline_t* prev, gfxcoord_t sx, gfxcoord_t sy, gfxcoord_t x, gfxcoord_t y) {
+    gfxline_t* line = malloc(sizeof(gfxline_t));
     line->type = gfx_splineTo;
     line->x = x;
     line->y = y;
@@ -73,15 +70,14 @@ gfxline_t* gfxline_splineTo(gfxline_t*prev, gfxcoord_t sx, gfxcoord_t sy, gfxcoo
     line->sy = sy;
     line->prev = prev;
     line->next = NULL;
-    if(prev) {
+    if (prev) {
         prev->next = line;
     }
     return line;
 }
 
-gfxline_t* gfxline_rewind(gfxline_t*line)
-{
-    while(line && line->prev)
+gfxline_t* gfxline_rewind(gfxline_t* line) {
+    while (line && line->prev)
         line = line->prev;
     return line;
 }
